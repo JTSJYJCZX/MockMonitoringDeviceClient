@@ -20,7 +20,7 @@ namespace BHMSClient
 
         static async Task PostData()
         {
-            const string serviceUri = "http://localhost/rmds/odata";
+            const string serviceUri = "http://localhost:8888/odata";
             var container = new DefaultContainer(new Uri(serviceUri));
             var random = new Random();
             await PostCableForceDatas(container, random);
