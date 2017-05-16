@@ -45,7 +45,7 @@ namespace BHMSClient
                     Temperature = random.Next(0, 35),
                     Time = DateTime.Now,
                 };
-                if (newConcreteStrainData.PointsNumberId == 79 || newConcreteStrainData.PointsNumberId == 91 && newConcreteStrainData.Time.Hour == 7 && newConcreteStrainData.Time.Minute == 35)
+                if ((newConcreteStrainData.PointsNumberId == 79 || newConcreteStrainData.PointsNumberId == 91) && newConcreteStrainData.Time.Hour == 7 && newConcreteStrainData.Time.Minute == 35)
                 {
                     newConcreteStrainData.Strain = -1100;
                 }
@@ -177,7 +177,7 @@ namespace BHMSClient
                     Temperature = random.Next(0, 35),
                     Time = DateTime.Now,
                 };
-                if (newCableForceData.PointsNumberId == 128 && newCableForceData.PointsNumberId == 131 && newCableForceData.Time.Hour == 7 && newCableForceData.Time.Minute == 35)
+                if ((newCableForceData.PointsNumberId == 128 || newCableForceData.PointsNumberId == 131 )&& newCableForceData.Time.Hour == 7 && newCableForceData.Time.Minute == 35)
                 {
                     newCableForceData.CableForce = 11000;
                 }
@@ -346,7 +346,7 @@ namespace BHMSClient
                     Time = DateTime.Now,
                 };
                 //异常设置
-                if (newDisplacementData.PointsNumberId == 98 || newDisplacementData.PointsNumberId == 110 || newDisplacementData.PointsNumberId == 114 && newDisplacementData.Time.Hour == 7 && newDisplacementData.Time.Minute == 35)
+                if ((newDisplacementData.PointsNumberId == 98 || newDisplacementData.PointsNumberId == 110 || newDisplacementData.PointsNumberId == 114 )&& newDisplacementData.Time.Hour == 7 && newDisplacementData.Time.Minute == 35)
                 {
                     newDisplacementData.Displacement = 500;
                 }
@@ -776,7 +776,7 @@ namespace BHMSClient
                     Temperature = random.Next(30, 35),
                     Time = DateTime.Now,
                 };
-                if (newSteelArchStrainData.PointsNumberId == 7 || newSteelArchStrainData.PointsNumberId == 21 && newSteelArchStrainData.Time.Hour == 7 && newSteelArchStrainData.Time.Minute == 35)
+                if (((newSteelArchStrainData.PointsNumberId == 7) || (newSteelArchStrainData.PointsNumberId == 21)) && (newSteelArchStrainData.Time.Hour == 7) && (newSteelArchStrainData.Time.Minute == 35))
                 {
                     newSteelArchStrainData.Strain = 1100;
                 }
@@ -961,7 +961,7 @@ namespace BHMSClient
                     Temperature = random.Next(30, 35),
                     Time = DateTime.Now,
                 };
-                if (newSteelLatticeStrainData.PointsNumberId == 57 || newSteelLatticeStrainData.PointsNumberId == 61 && newSteelLatticeStrainData.Time.Hour == 7 && newSteelLatticeStrainData.Time.Minute == 35)
+                if ((newSteelLatticeStrainData.PointsNumberId == 57 || newSteelLatticeStrainData.PointsNumberId == 61) && newSteelLatticeStrainData.Time.Hour == 7 && newSteelLatticeStrainData.Time.Minute == 35)
                 {
                     newSteelLatticeStrainData.Strain = 1100;
                 }
