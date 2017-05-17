@@ -20,7 +20,7 @@ namespace BHMSClient
 
         static async Task PostData()
         {
-            const string serviceUri = "http://localhost/rmds/odata";
+            const string serviceUri = "http://localhost:53109/odata";
             var container = new DefaultContainer(new Uri(serviceUri));
             var random = new Random();
             await PostCableForceDatas(container, random);
@@ -50,7 +50,7 @@ namespace BHMSClient
                     newConcreteStrainData.Strain = -1100;
                 }
                 //设置混凝土拱肋上缘的应变值
-                if ((newConcreteStrainData.PointsNumberId >= 79 && newConcreteStrainData.PointsNumberId <= 80) || (newConcreteStrainData.PointsNumberId >= 83 && newConcreteStrainData.PointsNumberId <= 84) || (newConcreteStrainData.PointsNumberId >= 87 && newConcreteStrainData.PointsNumberId <= 88) || (newConcreteStrainData.PointsNumberId >= 91 && newConcreteStrainData.PointsNumberId <= 92))
+                else if ((newConcreteStrainData.PointsNumberId >= 79 && newConcreteStrainData.PointsNumberId <= 80) || (newConcreteStrainData.PointsNumberId >= 83 && newConcreteStrainData.PointsNumberId <= 84) || (newConcreteStrainData.PointsNumberId >= 87 && newConcreteStrainData.PointsNumberId <= 88) || (newConcreteStrainData.PointsNumberId >= 91 && newConcreteStrainData.PointsNumberId <= 92))
                 {
                     if (newConcreteStrainData.Time.Hour >= 0 && newConcreteStrainData.Time.Hour <= 6)
                     {
@@ -62,7 +62,10 @@ namespace BHMSClient
                         {
                             newConcreteStrainData.Strain = random.Next(-230, -50);//可能红色报警
                         }
-                        newConcreteStrainData.Strain = random.Next(-175, -90);
+                        else
+                        {
+                            newConcreteStrainData.Strain = random.Next(-175, -90);
+                        }
                     }
                     else if (newConcreteStrainData.Time.Hour >= 9 && newConcreteStrainData.Time.Hour <= 11)
                     {
@@ -74,7 +77,10 @@ namespace BHMSClient
                         {
                             newConcreteStrainData.Strain = random.Next(-230, -50);//可能红色报警
                         }
-                        newConcreteStrainData.Strain = random.Next(-175, -90);
+                        else
+                        {
+                            newConcreteStrainData.Strain = random.Next(-175, -90);
+                        }
                     }
                     else if (newConcreteStrainData.Time.Hour >= 15 && newConcreteStrainData.Time.Hour <= 16)
                     {
@@ -86,7 +92,10 @@ namespace BHMSClient
                         {
                             newConcreteStrainData.Strain = random.Next(-230, -50);//可能红色报警
                         }
-                        newConcreteStrainData.Strain = random.Next(-175, -90);
+                        else
+                        {
+                            newConcreteStrainData.Strain = random.Next(-175, -90);
+                        }
                     }
                     else
                     {
@@ -105,7 +114,10 @@ namespace BHMSClient
                         {
                             newConcreteStrainData.Strain = random.Next(-260, -170);//可能红色报警
                         }
-                        newConcreteStrainData.Strain = random.Next(-195, -150);
+                        else
+                        {
+                            newConcreteStrainData.Strain = random.Next(-195, -150);
+                        }
                     }
                     else if (newConcreteStrainData.Time.Hour >= 9 && newConcreteStrainData.Time.Hour <= 11)
                     {
@@ -117,7 +129,10 @@ namespace BHMSClient
                         {
                             newConcreteStrainData.Strain = random.Next(-260, -170);//可能红色报警
                         }
-                        newConcreteStrainData.Strain = random.Next(-195, -150);
+                        else
+                        {
+                            newConcreteStrainData.Strain = random.Next(-195, -150);
+                        }
                     }
                     else if (newConcreteStrainData.Time.Hour >= 15 && newConcreteStrainData.Time.Hour <= 16)
                     {
@@ -129,7 +144,10 @@ namespace BHMSClient
                         {
                             newConcreteStrainData.Strain = random.Next(-260, -170);//可能红色报警
                         }
-                        newConcreteStrainData.Strain = random.Next(-195, -150);
+                        else
+                        {
+                            newConcreteStrainData.Strain = random.Next(-195, -150);
+                        }
                     }
                     else
                     {
@@ -164,7 +182,7 @@ namespace BHMSClient
                     newCableForceData.CableForce = 11000;
                 }
                 //设置上层吊杆
-                if (newCableForceData.PointsNumberId >= 121 && newCableForceData.PointsNumberId <= 138)
+                else if (newCableForceData.PointsNumberId >= 121 && newCableForceData.PointsNumberId <= 138)
                 {
                     if (newCableForceData.Time.Hour >= 0 && newCableForceData.Time.Hour <= 6)
                     {
@@ -208,7 +226,7 @@ namespace BHMSClient
                     }
                 }
                 //设置下层吊杆
-                if (newCableForceData.PointsNumberId >= 139 && newCableForceData.PointsNumberId <= 146)
+                else if (newCableForceData.PointsNumberId >= 139 && newCableForceData.PointsNumberId <= 146)
                 {
                     if (newCableForceData.Time.Hour >= 0 && newCableForceData.Time.Hour <= 6)
                     {
@@ -252,7 +270,7 @@ namespace BHMSClient
                     }
                 }
                 //设置柔性系杆
-                if (newCableForceData.PointsNumberId >= 147 && newCableForceData.PointsNumberId <= 158)
+                else if (newCableForceData.PointsNumberId >= 147 && newCableForceData.PointsNumberId <= 158)
                 {
                     if (newCableForceData.Time.Hour >= 0 && newCableForceData.Time.Hour <= 6)
                     {
@@ -324,7 +342,7 @@ namespace BHMSClient
                     newDisplacementData.Displacement = 500;
                 }
                 //拱肋横向和纵向位移设置
-                if (newDisplacementData.PointsNumberId >= 95 && newDisplacementData.PointsNumberId <= 102)
+                else if (newDisplacementData.PointsNumberId >= 95 && newDisplacementData.PointsNumberId <= 102)
                 {
                     if (newDisplacementData.Time.Hour >= 0 && newDisplacementData.Time.Hour <= 6)
                     {
@@ -336,11 +354,14 @@ namespace BHMSClient
                         {
                             newDisplacementData.Displacement = random.Next(-17, -10);//可能红色报警
                         }
-                        newDisplacementData.Displacement = random.Next(-12, 12);
+                        else
+                        {
+                            newDisplacementData.Displacement = random.Next(-11, 11);
+                        }
                     }
                     else if (newDisplacementData.Time.Hour >= 9 && newDisplacementData.Time.Hour <= 11)
                     {
-                        newDisplacementData.Displacement = random.Next(-12, 12);
+                        newDisplacementData.Displacement = random.Next(-11, 11);
                     }
                     else if (newDisplacementData.Time.Hour >= 12 && newDisplacementData.Time.Hour <= 14)
                     {
@@ -348,11 +369,14 @@ namespace BHMSClient
                         {
                             newDisplacementData.Displacement = random.Next(-17, -10);//可能红色报警
                         }
-                        newDisplacementData.Displacement = random.Next(-12, 12);
+                        else
+                        {
+                            newDisplacementData.Displacement = random.Next(-11, 11);
+                        }
                     }
                     else if (newDisplacementData.Time.Hour >= 15 && newDisplacementData.Time.Hour <= 16)
                     {
-                        newDisplacementData.Displacement = random.Next(-12, 12);
+                        newDisplacementData.Displacement = random.Next(-11, 11);
                     }
                     else if (newDisplacementData.Time.Hour >= 17 && newDisplacementData.Time.Hour <= 19)
                     {
@@ -360,7 +384,10 @@ namespace BHMSClient
                         {
                             newDisplacementData.Displacement = random.Next(-17, -10);//可能红色报警
                         }
-                        newDisplacementData.Displacement = random.Next(-12, 12);
+                        else
+                        {
+                            newDisplacementData.Displacement = random.Next(-11, 11);
+                        }
                     }
                     else
                     {
@@ -368,7 +395,7 @@ namespace BHMSClient
                     }
                 }
                 //拱肋边拱竖向挠度
-                if (newDisplacementData.PointsNumberId == 103 || newDisplacementData.PointsNumberId == 105)
+                else if (newDisplacementData.PointsNumberId == 103 || newDisplacementData.PointsNumberId == 105)
                 {
                     if (newDisplacementData.Time.Hour >= 0 && newDisplacementData.Time.Hour <= 6)
                     {
@@ -380,7 +407,10 @@ namespace BHMSClient
                         {
                             newDisplacementData.Displacement = random.Next(-28, -16);//可能红色报警
                         }
-                        newDisplacementData.Displacement = random.Next(-12, 5);
+                        else
+                        {
+                            newDisplacementData.Displacement = random.Next(-12, 5);
+                        }
                     }
                     else if (newDisplacementData.Time.Hour >= 9 && newDisplacementData.Time.Hour <= 11)
                     {
@@ -392,7 +422,10 @@ namespace BHMSClient
                         {
                             newDisplacementData.Displacement = random.Next(-28, -16);//可能红色报警
                         }
-                        newDisplacementData.Displacement = random.Next(-15, 5);
+                        else
+                        {
+                            newDisplacementData.Displacement = random.Next(-15, 5);
+                        }
                     }
                     else if (newDisplacementData.Time.Hour >= 15 && newDisplacementData.Time.Hour <= 16)
                     {
@@ -404,7 +437,10 @@ namespace BHMSClient
                         {
                             newDisplacementData.Displacement = random.Next(-28, -16);//可能红色报警
                         }
-                        newDisplacementData.Displacement = random.Next(-15, 5);
+                        else
+                        {
+                            newDisplacementData.Displacement = random.Next(-15, 5);
+                        }
                     }
                     else
                     {
@@ -412,7 +448,7 @@ namespace BHMSClient
                     }
                 }
                 //拱肋中拱竖向挠度
-                if (newDisplacementData.PointsNumberId == 104 || newDisplacementData.PointsNumberId == 106)
+               else if (newDisplacementData.PointsNumberId == 104 || newDisplacementData.PointsNumberId == 106)
                 {
                     if (newDisplacementData.Time.Hour >= 0 && newDisplacementData.Time.Hour <= 6)
                     {
@@ -424,7 +460,10 @@ namespace BHMSClient
                         {
                             newDisplacementData.Displacement = random.Next(-100, -60);//可能红色报警
                         }
-                        newDisplacementData.Displacement = random.Next(-60, 40);
+                        else
+                        {
+                            newDisplacementData.Displacement = random.Next(-60, 40);
+                        }
                     }
                     else if (newDisplacementData.Time.Hour >= 9 && newDisplacementData.Time.Hour <= 11)
                     {
@@ -436,7 +475,10 @@ namespace BHMSClient
                         {
                             newDisplacementData.Displacement = random.Next(-100, -60);//可能红色报警
                         }
-                        newDisplacementData.Displacement = random.Next(-60, 40);
+                        else
+                        {
+                            newDisplacementData.Displacement = random.Next(-60, 40);
+                        }
                     }
                     else if (newDisplacementData.Time.Hour >= 15 && newDisplacementData.Time.Hour <= 16)
                     {
@@ -448,7 +490,10 @@ namespace BHMSClient
                         {
                             newDisplacementData.Displacement = random.Next(-100, -60);//可能红色报警
                         }
-                        newDisplacementData.Displacement = random.Next(-60, 40);
+                        else
+                        {
+                            newDisplacementData.Displacement = random.Next(-60, 40);
+                        }
                     }
                     else
                     {
@@ -456,7 +501,7 @@ namespace BHMSClient
                     }
                 }
                 //边跨主梁竖向挠度
-                if (newDisplacementData.PointsNumberId == 107 || newDisplacementData.PointsNumberId == 109 || newDisplacementData.PointsNumberId == 110 || newDisplacementData.PointsNumberId == 112)
+               else if (newDisplacementData.PointsNumberId == 107 || newDisplacementData.PointsNumberId == 109 || newDisplacementData.PointsNumberId == 110 || newDisplacementData.PointsNumberId == 112)
                 {
                     if (newDisplacementData.Time.Hour >= 0 && newDisplacementData.Time.Hour <= 6)
                     {
@@ -468,7 +513,10 @@ namespace BHMSClient
                         {
                             newDisplacementData.Displacement = random.Next(-55, -31);//可能红色报警
                         }
-                        newDisplacementData.Displacement = random.Next(-35, 4);
+                        else
+                        {
+                            newDisplacementData.Displacement = random.Next(-35, 4);
+                        }
                     }
                     else if (newDisplacementData.Time.Hour >= 9 && newDisplacementData.Time.Hour <= 11)
                     {
@@ -480,7 +528,10 @@ namespace BHMSClient
                         {
                             newDisplacementData.Displacement = random.Next(-55, -31);//可能红色报警
                         }
-                        newDisplacementData.Displacement = random.Next(-35, 4);
+                        else
+                        {
+                            newDisplacementData.Displacement = random.Next(-35, 4);
+                        }
                     }
                     else if (newDisplacementData.Time.Hour >= 15 && newDisplacementData.Time.Hour <= 16)
                     {
@@ -492,7 +543,10 @@ namespace BHMSClient
                         {
                             newDisplacementData.Displacement = random.Next(-55, -31);//可能红色报警
                         }
-                        newDisplacementData.Displacement = random.Next(-35, 4);
+                        else
+                        {
+                            newDisplacementData.Displacement = random.Next(-35, 4);
+                        }
                     }
                     else
                     {
@@ -500,7 +554,7 @@ namespace BHMSClient
                     }
                 }
                 //中跨主梁竖向挠度
-                if (newDisplacementData.PointsNumberId == 108 || newDisplacementData.PointsNumberId == 111)
+               else if (newDisplacementData.PointsNumberId == 108 || newDisplacementData.PointsNumberId == 111)
                 {
                     if (newDisplacementData.Time.Hour >= 0 && newDisplacementData.Time.Hour <= 6)
                     {
@@ -512,7 +566,10 @@ namespace BHMSClient
                         {
                             newDisplacementData.Displacement = random.Next(-125, -80);//可能红色报警
                         }
-                        newDisplacementData.Displacement = random.Next(-80, 50);
+                        else
+                        {
+                            newDisplacementData.Displacement = random.Next(-80, 50);
+                        }
                     }
                     else if (newDisplacementData.Time.Hour >= 9 && newDisplacementData.Time.Hour <= 11)
                     {
@@ -524,7 +581,10 @@ namespace BHMSClient
                         {
                             newDisplacementData.Displacement = random.Next(-125, -80);//可能红色报警
                         }
-                        newDisplacementData.Displacement = random.Next(-80, 50);
+                        else
+                        {
+                            newDisplacementData.Displacement = random.Next(-80, 50);
+                        }
                     }
                     else if (newDisplacementData.Time.Hour >= 15 && newDisplacementData.Time.Hour <= 16)
                     {
@@ -536,7 +596,10 @@ namespace BHMSClient
                         {
                             newDisplacementData.Displacement = random.Next(-125, -80);//可能红色报警
                         }
-                        newDisplacementData.Displacement = random.Next(-80, 50);
+                        else
+                        {
+                            newDisplacementData.Displacement = random.Next(-80, 50);
+                        }
                     }
                     else
                     {
@@ -544,7 +607,7 @@ namespace BHMSClient
                     }
                 }
                 //过渡墩纵向位移
-                if (newDisplacementData.PointsNumberId >= 117 && newDisplacementData.PointsNumberId <= 120)
+              else if (newDisplacementData.PointsNumberId >= 117 && newDisplacementData.PointsNumberId <= 120)
                 {
                     if (newDisplacementData.Time.Hour >= 0 && newDisplacementData.Time.Hour <= 6)
                     {
@@ -556,7 +619,10 @@ namespace BHMSClient
                         {
                             newDisplacementData.Displacement = random.Next(70, 110);//可能红色报警
                         }
-                        newDisplacementData.Displacement = random.Next(40, 79);
+                        else
+                        {
+                            newDisplacementData.Displacement = random.Next(40, 79);
+                        }
                     }
                     else if (newDisplacementData.Time.Hour >= 9 && newDisplacementData.Time.Hour <= 11)
                     {
@@ -568,7 +634,10 @@ namespace BHMSClient
                         {
                             newDisplacementData.Displacement = random.Next(70, 110);//可能红色报警
                         }
-                        newDisplacementData.Displacement = random.Next(40, 79);
+                        else
+                        {
+                            newDisplacementData.Displacement = random.Next(40, 79);
+                        }
                     }
                     else if (newDisplacementData.Time.Hour >= 15 && newDisplacementData.Time.Hour <= 16)
                     {
@@ -580,7 +649,10 @@ namespace BHMSClient
                         {
                             newDisplacementData.Displacement = random.Next(70, 110);//可能红色报警
                         }
-                        newDisplacementData.Displacement = random.Next(40, 79);
+                        else
+                        {
+                            newDisplacementData.Displacement = random.Next(40, 79);
+                        }
                     }
                     else
                     {
@@ -588,7 +660,7 @@ namespace BHMSClient
                     }
                 }
                 //伸缩缝纵向位移
-                if (newDisplacementData.PointsNumberId >= 113 && newDisplacementData.PointsNumberId <= 116)
+               else
                 {
                     if (newDisplacementData.Time.Hour >= 0 && newDisplacementData.Time.Hour <= 6)
                     {
@@ -600,7 +672,10 @@ namespace BHMSClient
                         {
                             newDisplacementData.Displacement = random.Next(100, 160);//可能红色报警
                         }
-                        newDisplacementData.Displacement = random.Next(40, 110);
+                        else
+                        {
+                            newDisplacementData.Displacement = random.Next(40, 110);
+                        }
                     }
                     else if (newDisplacementData.Time.Hour >= 9 && newDisplacementData.Time.Hour <= 11)
                     {
@@ -612,7 +687,10 @@ namespace BHMSClient
                         {
                             newDisplacementData.Displacement = random.Next(100, 160);//可能红色报警
                         }
-                        newDisplacementData.Displacement = random.Next(40, 110);
+                        else
+                        {
+                            newDisplacementData.Displacement = random.Next(40, 110);
+                        }
                     }
                     else if (newDisplacementData.Time.Hour >= 15 && newDisplacementData.Time.Hour <= 16)
                     {
@@ -624,7 +702,10 @@ namespace BHMSClient
                         {
                             newDisplacementData.Displacement = random.Next(100, 160);//可能红色报警
                         }
-                        newDisplacementData.Displacement = random.Next(40, 110);
+                        else
+                        {
+                            newDisplacementData.Displacement = random.Next(40, 110);
+                        }
                     }
                     else
                     {
@@ -657,11 +738,11 @@ namespace BHMSClient
 
                 if (newHumidityData.PointsNumberId == 159)
                 {
-                    newHumidityData.Humidity = -0.0000078423 * Math.Pow(timeForCalculate, 6) + 0.0002969528 * Math.Pow(timeForCalculate, 5) - 0.0003479320 * Math.Pow(timeForCalculate, 4) - 0.0882313919 * Math.Pow(timeForCalculate, 3) + 0.9074929115 * Math.Pow(timeForCalculate, 2) - 2.7612024709 * timeForCalculate + 94.4810448062 + random.Next(-5, 5);
+                    newHumidityData.Humidity = Math.Round((-0.0000078423 * Math.Pow(timeForCalculate, 6) + 0.0002969528 * Math.Pow(timeForCalculate, 5) - 0.0003479320 * Math.Pow(timeForCalculate, 4) - 0.0882313919 * Math.Pow(timeForCalculate, 3) + 0.9074929115 * Math.Pow(timeForCalculate, 2) - 2.7612024709 * timeForCalculate + 94.4810448062 + random.Next(-5, 5)),2);
                 }
                 else
                 {
-                    newHumidityData.Humidity = 0.0000003604 * Math.Pow(timeForCalculate, 6) - 0.0000414864 * Math.Pow(timeForCalculate, 5) + 0.0021461937 * Math.Pow(timeForCalculate, 4) - 0.0521791190 * Math.Pow(timeForCalculate, 3) + 0.5739883341 * Math.Pow(timeForCalculate, 2) - 2.1637451666 * timeForCalculate + 42.5826680075 + random.Next(-5, 5);
+                    newHumidityData.Humidity = Math.Round((0.0000003604 * Math.Pow(timeForCalculate, 6) - 0.0000414864 * Math.Pow(timeForCalculate, 5) + 0.0021461937 * Math.Pow(timeForCalculate, 4) - 0.0521791190 * Math.Pow(timeForCalculate, 3) + 0.5739883341 * Math.Pow(timeForCalculate, 2) - 2.1637451666 * timeForCalculate + 42.5826680075 + random.Next(-5, 5)),2);
 
                 }
                 await AddOriginal_HumidityTableEntity(container, newHumidityData);
@@ -691,7 +772,7 @@ namespace BHMSClient
                     newSteelArchStrainData.Strain = 1100;
                 }
                 //设置钢拱肋A、C、E截面的应变值
-                if ((newSteelArchStrainData.PointsNumberId >= 1 && newSteelArchStrainData.PointsNumberId <= 8) || (newSteelArchStrainData.PointsNumberId >= 17 && newSteelArchStrainData.PointsNumberId <= 24) || (newSteelArchStrainData.PointsNumberId >= 33 && newSteelArchStrainData.PointsNumberId <= 40))
+                else if ((newSteelArchStrainData.PointsNumberId >= 1 && newSteelArchStrainData.PointsNumberId <= 8) || (newSteelArchStrainData.PointsNumberId >= 17 && newSteelArchStrainData.PointsNumberId <= 24) || (newSteelArchStrainData.PointsNumberId >= 33 && newSteelArchStrainData.PointsNumberId <= 40))
                 {
                     if (newSteelArchStrainData.Time.Hour >= 0 && newSteelArchStrainData.Time.Hour <= 6)
                     {
@@ -703,7 +784,10 @@ namespace BHMSClient
                         {
                             newSteelArchStrainData.Strain = random.Next(-600, -400);//可能红色报警
                         }
-                        newSteelArchStrainData.Strain = random.Next(-450, -260);
+                        else
+                        {
+                            newSteelArchStrainData.Strain = random.Next(-450, -260);
+                        }
                     }
                     else if (newSteelArchStrainData.Time.Hour >= 9 && newSteelArchStrainData.Time.Hour <= 11)
                     {
@@ -715,7 +799,10 @@ namespace BHMSClient
                         {
                             newSteelArchStrainData.Strain = random.Next(-600, -400);//可能红色报警
                         }
-                        newSteelArchStrainData.Strain = random.Next(-450, -260);
+                        else
+                        {
+                            newSteelArchStrainData.Strain = random.Next(-450, -260);
+                        }
                     }
                     else if (newSteelArchStrainData.Time.Hour >= 15 && newSteelArchStrainData.Time.Hour <= 16)
                     {
@@ -727,7 +814,10 @@ namespace BHMSClient
                         {
                             newSteelArchStrainData.Strain = random.Next(-600, 400);//可能红色报警
                         }
-                        newSteelArchStrainData.Strain = random.Next(-450, -260);
+                        else
+                        {
+                            newSteelArchStrainData.Strain = random.Next(-450, -260);
+                        }
                     }
                     else
                     {
@@ -735,7 +825,7 @@ namespace BHMSClient
                     }
                 }
                 //设置钢拱肋B、D截面的应变值
-                if ((newSteelArchStrainData.PointsNumberId >= 9 && newSteelArchStrainData.PointsNumberId <= 16) || (newSteelArchStrainData.PointsNumberId >= 25 && newSteelArchStrainData.PointsNumberId <= 32))
+              else if ((newSteelArchStrainData.PointsNumberId >= 9 && newSteelArchStrainData.PointsNumberId <= 16) || (newSteelArchStrainData.PointsNumberId >= 25 && newSteelArchStrainData.PointsNumberId <= 32))
                 {
                     if (newSteelArchStrainData.Time.Hour >= 0 && newSteelArchStrainData.Time.Hour <= 6)
                     {
@@ -747,7 +837,10 @@ namespace BHMSClient
                         {
                             newSteelArchStrainData.Strain = random.Next(-810, -580);//可能红色报警
                         }
-                        newSteelArchStrainData.Strain = random.Next(-580, -260);
+                        else
+                        {
+                            newSteelArchStrainData.Strain = random.Next(-580, -260);
+                        }
                     }
                     else if (newSteelArchStrainData.Time.Hour >= 9 && newSteelArchStrainData.Time.Hour <= 11)
                     {
@@ -759,7 +852,10 @@ namespace BHMSClient
                         {
                             newSteelArchStrainData.Strain = random.Next(-810, -580);//可能红色报警
                         }
-                        newSteelArchStrainData.Strain = random.Next(-580, -260);
+                        else
+                        {
+                            newSteelArchStrainData.Strain = random.Next(-580, -260);
+                        }
                     }
                     else if (newSteelArchStrainData.Time.Hour >= 15 && newSteelArchStrainData.Time.Hour <= 16)
                     {
@@ -771,7 +867,10 @@ namespace BHMSClient
                         {
                             newSteelArchStrainData.Strain = random.Next(-810, -580);//可能红色报警
                         }
-                        newSteelArchStrainData.Strain = random.Next(-580, -260);
+                        else
+                        {
+                            newSteelArchStrainData.Strain = random.Next(-580, -260);
+                        }
                     }
                     else
                     {
@@ -779,7 +878,7 @@ namespace BHMSClient
                     }
                 }
                 //设置拱肋横撑A、B截面的应变值
-                if (newSteelArchStrainData.PointsNumberId >= 41 && newSteelArchStrainData.PointsNumberId <= 48)
+               else if (newSteelArchStrainData.PointsNumberId >= 41 && newSteelArchStrainData.PointsNumberId <= 48)
                 {
                     if (newSteelArchStrainData.Time.Hour >= 0 && newSteelArchStrainData.Time.Hour <= 6)
                     {
@@ -791,7 +890,10 @@ namespace BHMSClient
                         {
                             newSteelArchStrainData.Strain = random.Next(-510, 390);//可能红色报警
                         }
-                        newSteelArchStrainData.Strain = random.Next(-400, 280);
+                        else
+                        {
+                            newSteelArchStrainData.Strain = random.Next(-400, 280);
+                        }
                     }
                     else if (newSteelArchStrainData.Time.Hour >= 9 && newSteelArchStrainData.Time.Hour <= 11)
                     {
@@ -803,7 +905,10 @@ namespace BHMSClient
                         {
                             newSteelArchStrainData.Strain = random.Next(-510, 390);//可能红色报警
                         }
-                        newSteelArchStrainData.Strain = random.Next(-400, 280);
+                        else
+                        {
+                            newSteelArchStrainData.Strain = random.Next(-400, 280);
+                        }
                     }
                     else if (newSteelArchStrainData.Time.Hour >= 15 && newSteelArchStrainData.Time.Hour <= 16)
                     {
@@ -815,7 +920,10 @@ namespace BHMSClient
                         {
                             newSteelArchStrainData.Strain = random.Next(-510, 390);//可能红色报警
                         }
-                        newSteelArchStrainData.Strain = random.Next(-400, 280);
+                        else
+                        {
+                            newSteelArchStrainData.Strain = random.Next(-400, 280);
+                        }
                     }
                     else
                     {
@@ -849,7 +957,7 @@ namespace BHMSClient
                     newSteelLatticeStrainData.Strain = 1100;
                 }
                 //设置肋间横梁A/B截面/上层钢横梁A/B截面的应变值
-                if (newSteelLatticeStrainData.PointsNumberId >= 49 && newSteelLatticeStrainData.PointsNumberId <= 56)
+               else if (newSteelLatticeStrainData.PointsNumberId >= 49 && newSteelLatticeStrainData.PointsNumberId <= 56)
                 {
                     if (newSteelLatticeStrainData.Time.Hour >= 0 && newSteelLatticeStrainData.Time.Hour <= 6)
                     {
@@ -861,7 +969,10 @@ namespace BHMSClient
                         {
                             newSteelLatticeStrainData.Strain = random.Next(-800, 800);//可能红色报警
                         }
-                        newSteelLatticeStrainData.Strain = random.Next(-450, 260);
+                        else
+                        {
+                            newSteelLatticeStrainData.Strain = random.Next(-450, 260);
+                        }
                     }
                     else if (newSteelLatticeStrainData.Time.Hour >= 9 && newSteelLatticeStrainData.Time.Hour <= 11)
                     {
@@ -873,7 +984,10 @@ namespace BHMSClient
                         {
                             newSteelLatticeStrainData.Strain = random.Next(-800, 800);//可能红色报警
                         }
-                        newSteelLatticeStrainData.Strain = random.Next(-450, 260);
+                        else
+                        {
+                            newSteelLatticeStrainData.Strain = random.Next(-450, 260);
+                        }
                     }
                     else if (newSteelLatticeStrainData.Time.Hour >= 15 && newSteelLatticeStrainData.Time.Hour <= 16)
                     {
@@ -885,7 +999,10 @@ namespace BHMSClient
                         {
                             newSteelLatticeStrainData.Strain = random.Next(-800, 800);//可能红色报警
                         }
-                        newSteelLatticeStrainData.Strain = random.Next(-450, 260);
+                        else
+                        {
+                            newSteelLatticeStrainData.Strain = random.Next(-450, 260);
+                        }
                     }
                     else
                     {
@@ -893,7 +1010,7 @@ namespace BHMSClient
                     }
                 }
                 //设置钢纵梁A/B截面应变
-                if (newSteelLatticeStrainData.PointsNumberId >= 57 && newSteelLatticeStrainData.PointsNumberId <= 62)
+              else if (newSteelLatticeStrainData.PointsNumberId >= 57 && newSteelLatticeStrainData.PointsNumberId <= 62)
                 {
                     if (newSteelLatticeStrainData.Time.Hour >= 0 && newSteelLatticeStrainData.Time.Hour <= 6)
                     {
@@ -905,7 +1022,10 @@ namespace BHMSClient
                         {
                             newSteelLatticeStrainData.Strain = random.Next(-810, 500);//可能红色报警
                         }
-                        newSteelLatticeStrainData.Strain = random.Next(-450, 260);
+                        else
+                        {
+                            newSteelLatticeStrainData.Strain = random.Next(-450, 260);
+                        }
                     }
                     else if (newSteelLatticeStrainData.Time.Hour >= 9 && newSteelLatticeStrainData.Time.Hour <= 11)
                     {
@@ -917,7 +1037,10 @@ namespace BHMSClient
                         {
                             newSteelLatticeStrainData.Strain = random.Next(-810, 500);//可能红色报警
                         }
-                        newSteelLatticeStrainData.Strain = random.Next(-450, 260);
+                        else
+                        {
+                            newSteelLatticeStrainData.Strain = random.Next(-450, 260);
+                        }
                     }
                     else if (newSteelLatticeStrainData.Time.Hour >= 15 && newSteelLatticeStrainData.Time.Hour <= 16)
                     {
@@ -929,7 +1052,10 @@ namespace BHMSClient
                         {
                             newSteelLatticeStrainData.Strain = random.Next(-810, 500);//可能红色报警
                         }
-                        newSteelLatticeStrainData.Strain = random.Next(-450, 260);
+                        else
+                        {
+                            newSteelLatticeStrainData.Strain = random.Next(-450, 260);
+                        }
                     }
                     else
                     {
@@ -937,7 +1063,7 @@ namespace BHMSClient
                     }
                 }
                 //设置上层钢性系杆截面的上缘应变值
-                if ((newSteelLatticeStrainData.PointsNumberId >= 63 && newSteelLatticeStrainData.PointsNumberId <= 64) || (newSteelLatticeStrainData.PointsNumberId >= 67 && newSteelLatticeStrainData.PointsNumberId <= 68) || (newSteelLatticeStrainData.PointsNumberId >= 71 && newSteelLatticeStrainData.PointsNumberId <= 72) || (newSteelLatticeStrainData.PointsNumberId >= 75 && newSteelLatticeStrainData.PointsNumberId <= 76))
+               else  if ((newSteelLatticeStrainData.PointsNumberId >= 63 && newSteelLatticeStrainData.PointsNumberId <= 64) || (newSteelLatticeStrainData.PointsNumberId >= 67 && newSteelLatticeStrainData.PointsNumberId <= 68) || (newSteelLatticeStrainData.PointsNumberId >= 71 && newSteelLatticeStrainData.PointsNumberId <= 72) || (newSteelLatticeStrainData.PointsNumberId >= 75 && newSteelLatticeStrainData.PointsNumberId <= 76))
                 {
                     if (newSteelLatticeStrainData.Time.Hour >= 0 && newSteelLatticeStrainData.Time.Hour <= 6)
                     {
@@ -949,7 +1075,10 @@ namespace BHMSClient
                         {
                             newSteelLatticeStrainData.Strain = random.Next(-310, 650);//可能红色报警
                         }
-                        newSteelLatticeStrainData.Strain = random.Next(-200, 480);
+                        else
+                        {
+                            newSteelLatticeStrainData.Strain = random.Next(-200, 480);
+                        }
                     }
                     else if (newSteelLatticeStrainData.Time.Hour >= 9 && newSteelLatticeStrainData.Time.Hour <= 11)
                     {
@@ -961,7 +1090,10 @@ namespace BHMSClient
                         {
                             newSteelLatticeStrainData.Strain = random.Next(-310, 650);//可能红色报警
                         }
-                        newSteelLatticeStrainData.Strain = random.Next(-200, 480);
+                        else
+                        {
+                            newSteelLatticeStrainData.Strain = random.Next(-200, 480);
+                        }
                     }
                     else if (newSteelLatticeStrainData.Time.Hour >= 15 && newSteelLatticeStrainData.Time.Hour <= 16)
                     {
@@ -973,14 +1105,17 @@ namespace BHMSClient
                         {
                             newSteelLatticeStrainData.Strain = random.Next(-310, 650);//可能红色报警
                         }
-                        newSteelLatticeStrainData.Strain = random.Next(-200, 480);
+                        else
+                        {
+                            newSteelLatticeStrainData.Strain = random.Next(-200, 480);
+                        }
                     }
                     else
                     {
                         newSteelLatticeStrainData.Strain = random.Next(-150, 350);
                     }
                 }
-                if ((newSteelLatticeStrainData.PointsNumberId >= 65 && newSteelLatticeStrainData.PointsNumberId <= 66) || (newSteelLatticeStrainData.PointsNumberId >= 69 && newSteelLatticeStrainData.PointsNumberId <= 70) || (newSteelLatticeStrainData.PointsNumberId >= 73 && newSteelLatticeStrainData.PointsNumberId <= 74) || (newSteelLatticeStrainData.PointsNumberId >= 77 && newSteelLatticeStrainData.PointsNumberId <= 78))
+              else
                 {
                     if (newSteelLatticeStrainData.Time.Hour >= 0 && newSteelLatticeStrainData.Time.Hour <= 6)
                     {
@@ -992,7 +1127,10 @@ namespace BHMSClient
                         {
                             newSteelLatticeStrainData.Strain = random.Next(-520, 350);//可能红色报警
                         }
-                        newSteelLatticeStrainData.Strain = random.Next(-350, 200);
+                        else
+                        {
+                            newSteelLatticeStrainData.Strain = random.Next(-350, 200);
+                        }
                     }
                     else if (newSteelLatticeStrainData.Time.Hour >= 9 && newSteelLatticeStrainData.Time.Hour <= 11)
                     {
@@ -1004,7 +1142,10 @@ namespace BHMSClient
                         {
                             newSteelLatticeStrainData.Strain = random.Next(-520, 350);//可能红色报警
                         }
-                        newSteelLatticeStrainData.Strain = random.Next(-350, 200);
+                        else
+                        {
+                            newSteelLatticeStrainData.Strain = random.Next(-350, 200);
+                        }
                     }
                     else if (newSteelLatticeStrainData.Time.Hour >= 15 && newSteelLatticeStrainData.Time.Hour <= 16)
                     {
@@ -1016,7 +1157,10 @@ namespace BHMSClient
                         {
                             newSteelLatticeStrainData.Strain = random.Next(-520, 350);//可能红色报警
                         }
-                        newSteelLatticeStrainData.Strain = random.Next(-350, 200);
+                        else
+                        {
+                            newSteelLatticeStrainData.Strain = random.Next(-350, 200);
+                        }
                     }
                     else
                     {
@@ -1048,11 +1192,11 @@ namespace BHMSClient
                 timeForCalculate = Convert.ToDouble(newTemperatureData.Time.Hour) + Convert.ToDouble(newTemperatureData.Time.Minute) / 60;
                 if (newTemperatureData.PointsNumberId == 168)
                 {
-                    newTemperatureData.Temperature = 0.0006688963 * Math.Pow(timeForCalculate, 4) - 0.0348599334 * Math.Pow(timeForCalculate, 3) + 0.5121538687 * Math.Pow(timeForCalculate, 2) - 1.3478253362 * timeForCalculate + 23.4826210826 + random.Next(-2, 2);
+                    newTemperatureData.Temperature = Math.Round((0.0006688963 * Math.Pow(timeForCalculate, 4) - 0.0348599334 * Math.Pow(timeForCalculate, 3) + 0.5121538687 * Math.Pow(timeForCalculate, 2) - 1.3478253362 * timeForCalculate + 23.4826210826 + random.Next(-2, 2)),2);
                 }
                 else
                 {
-                    newTemperatureData.Temperature = -0.0000161352 * Math.Pow(timeForCalculate, 6) + 0.0013666675 * Math.Pow(timeForCalculate, 5) - 0.0419269504 * Math.Pow(timeForCalculate, 4) + 0.5518862571 * Math.Pow(timeForCalculate, 3) - 2.8402782982 * Math.Pow(timeForCalculate, 2) + 5.1969544638 * timeForCalculate + 11.6605128245 + random.Next(-2, 5);
+                    newTemperatureData.Temperature = Math.Round((-0.0000161352 * Math.Pow(timeForCalculate, 6) + 0.0013666675 * Math.Pow(timeForCalculate, 5) - 0.0419269504 * Math.Pow(timeForCalculate, 4) + 0.5518862571 * Math.Pow(timeForCalculate, 3) - 2.8402782982 * Math.Pow(timeForCalculate, 2) + 5.1969544638 * timeForCalculate + 11.6605128245 + random.Next(-2, 5)),2);
 
                 }
                 await AddOriginal_TemperatureTableEntity(container, newTemperatureData);
@@ -1079,7 +1223,7 @@ namespace BHMSClient
                 };
                 timeForCalculate = Convert.ToDouble(newWindLoadData.Time.Hour) + Convert.ToDouble(newWindLoadData.Time.Minute) / 60;
 
-                newWindLoadData.WindSpeed = 0.0000098798 * Math.Pow(timeForCalculate, 6) - 0.0006773310 * Math.Pow(timeForCalculate, 5) + 0.0168724697 * Math.Pow(timeForCalculate, 4) - 0.1791762231 * Math.Pow(timeForCalculate, 3) + 0.6505986426 * Math.Pow(timeForCalculate, 2) + 0.5279698407 * timeForCalculate + 10.2690913645 + random.Next(-2, 4);
+                newWindLoadData.WindSpeed = Math.Round((0.0000098798 * Math.Pow(timeForCalculate, 6) - 0.0006773310 * Math.Pow(timeForCalculate, 5) + 0.0168724697 * Math.Pow(timeForCalculate, 4) - 0.1791762231 * Math.Pow(timeForCalculate, 3) + 0.6505986426 * Math.Pow(timeForCalculate, 2) + 0.5279698407 * timeForCalculate + 10.2690913645 + random.Next(-2, 4)),2);
 
                 await AddOriginal_WindLoadTableEntity(container, newWindLoadData);
             }
