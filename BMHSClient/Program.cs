@@ -194,7 +194,10 @@ namespace BHMSClient
                         {
                             newCableForceData.CableForce = random.Next(1700, 2200);//可能红色报警
                         }
-                        newCableForceData.CableForce = random.Next(700, 1400);
+                        else
+                        {
+                            newCableForceData.CableForce = random.Next(700, 1400);
+                        }
                     }
                     else if (newCableForceData.Time.Hour >= 9 && newCableForceData.Time.Hour <= 11)
                     {
@@ -206,7 +209,10 @@ namespace BHMSClient
                         {
                             newCableForceData.CableForce = random.Next(1700, 2200);//可能红色报警
                         }
-                        newCableForceData.CableForce = random.Next(700, 1400);
+                        else
+                        {
+                            newCableForceData.CableForce = random.Next(700, 1400);
+                        }
                     }
                     else if (newCableForceData.Time.Hour >= 15 && newCableForceData.Time.Hour <= 16)
                     {
@@ -218,7 +224,10 @@ namespace BHMSClient
                         {
                             newCableForceData.CableForce = random.Next(1700, 2200);//可能红色报警
                         }
-                        newCableForceData.CableForce = random.Next(700, 1400);
+                        else
+                        {
+                            newCableForceData.CableForce = random.Next(700, 1400);
+                        }
                     }
                     else
                     {
