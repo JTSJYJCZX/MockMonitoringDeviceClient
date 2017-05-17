@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generation date: 2017/5/15 21:17:37
+// Generation date: 2017/5/17 8:39:21
 namespace BMHSClient.ReceiveMonitoringDataServer.Models
 {
     /// <summary>
