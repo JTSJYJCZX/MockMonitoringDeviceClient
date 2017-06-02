@@ -13,7 +13,7 @@ namespace BHMSClient
         {
             while (true)
             {
-                Thread.Sleep(10000);
+                Thread.Sleep(1000);
                 PostData().Wait();
             }
         }
@@ -216,17 +216,17 @@ namespace BHMSClient
                     }
                     else if (newCableForceData.Time.Hour >= 15 && newCableForceData.Time.Hour <= 16)
                     {
-                        newCableForceData.CableForce = random.Next(500, 1200);
+                        newCableForceData.CableForce = random.Next(2000, 2500);
                     }
                     else if (newCableForceData.Time.Hour >= 17 && newCableForceData.Time.Hour <= 19)
                     {
                         if (newCableForceData.Time.Minute == 17)
                         {
-                            newCableForceData.CableForce = random.Next(1700, 2200);//可能红色报警
+                            newCableForceData.CableForce = random.Next(2000, 2500);//可能红色报警
                         }
                         else
                         {
-                            newCableForceData.CableForce = random.Next(700, 1400);
+                            newCableForceData.CableForce = random.Next(2000, 2500);
                         }
                     }
                     else
