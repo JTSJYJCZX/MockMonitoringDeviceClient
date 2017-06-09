@@ -20,7 +20,7 @@ namespace BHMSClient
 
         static async Task PostData()
         {
-            const string serviceUri = "http://localhost:8888/odata";
+            const string serviceUri = "http://localhost:53109/odata";
             var container = new DefaultContainer(new Uri(serviceUri));
             var random = new Random();
             await PostCableForceDatas(container, random);
@@ -168,7 +168,11 @@ namespace BHMSClient
         {
             const int startNumberOfCableForcePoints = 121;
             const int endNumberOfCableForcePoints = 158;
-
+            //每次发送数据以前先随机得到各个类型测点可能出现报警的测点号
+            var warningPointOne = random.Next(121, 130);//上层吊杆可能出现报警的测点
+            var warningPointTwo = random.Next(131, 138);//上层吊杆可能出现报警的测点
+            var warningPointThree = random.Next(139, 146);//下层吊杆可能出现报警的测点
+            var warningPointFour = random.Next(147, 158);//柔性系杆杆可能出现报警的测点
             for (int i = startNumberOfCableForcePoints; i <= endNumberOfCableForcePoints; i++)
             {
                 var newCableForceData = new Original_CableForceTable()
@@ -177,150 +181,217 @@ namespace BHMSClient
                     Temperature = random.Next(0, 35),
                     Time = DateTime.Now,
                 };
-                if ((newCableForceData.PointsNumberId == 128 || newCableForceData.PointsNumberId == 131 )&& newCableForceData.Time.Hour == 7 && newCableForceData.Time.Minute == 35)
+                //设置128号和131号吊杆会可能会出现异常事件
+                if ((newCableForceData.PointsNumberId == 128 || newCableForceData.PointsNumberId == 131) && newCableForceData.Time.Hour == 7 && newCableForceData.Time.Minute == 35)
                 {
-                    newCableForceData.CableForce = 11000;
+                    newCableForceData.CableForce = random.Next(7000, 11000);
                 }
-                //设置上层吊杆
+                //设置上层吊杆非异常值     
+
                 else if (newCableForceData.PointsNumberId >= 121 && newCableForceData.PointsNumberId <= 138)
                 {
-                    if (newCableForceData.Time.Hour >= 0 && newCableForceData.Time.Hour <= 6)
+                    if (newCableForceData.PointsNumberId==121 || newCableForceData.PointsNumberId == 122)
                     {
-                        newCableForceData.CableForce = random.Next(460, 800);
-                    }
-                    else if (newCableForceData.Time.Hour >= 7 && newCableForceData.Time.Hour <= 8)
-                    {
-                        if (newCableForceData.Time.Minute == 17)
+                        //0点到7点正常。
+                        if (newCableForceData.Time.Hour >= 0 && newCableForceData.Time.Hour <= 6)
                         {
-                            newCableForceData.CableForce = random.Next(1700, 2200);//可能红色报警
+                            newCableForceData.CableForce = random.Next(1100, 1200);
                         }
+                        //7点到9点，7点17分和8点17分测点warningPointOne、warningPointTwo可能会出现报警，超过1556.8出现黄色预警，超过1946便出现红色预警。
+                        else if (newCableForceData.Time.Hour >= 7 && newCableForceData.Time.Hour <= 8)
+                        {
+                            if (newCableForceData.Time.Minute == 17)
+                            {
+                                newCableForceData.CableForce = random.Next(1500, 2200);//可能出现黄色或者红色报警
+                            }
+                            else
+                            {
+                                newCableForceData.CableForce = random.Next(1200, 1500);//正常值             
+                            }
+                                   
+                        }
+                        //9点到12点之间，正常索力值
+                        else if (newCableForceData.Time.Hour >= 9 && newCableForceData.Time.Hour <= 11)
+                        {
+                            newCableForceData.CableForce = random.Next(1200, 1450);
+                        }
+                        //12点15点之间，可能出现红色报警
+                        else if (newCableForceData.Time.Hour >= 12 && newCableForceData.Time.Hour <= 14)
+                        {
+                            if (newCableForceData.Time.Minute == 38)
+                            {
+                                newCableForceData.CableForce = random.Next(1500, 2200);//可能红色报警
+                            }
+                            else
+                            {
+                                newCableForceData.CableForce = random.Next(1200, 1500);//正常值   
+                            }
+                        }
+                        //15点到17点之间，正常索力值在所有分钟都可能随机出现红色预警
+                        else if (newCableForceData.Time.Hour >= 15 && newCableForceData.Time.Hour <= 16)
+                        {
+                            newCableForceData.CableForce = random.Next(1100, 1960);
+                        }
+                        //17点到20点， 遇到20分钟可能出现红色预警
+                        else if (newCableForceData.Time.Hour >= 17 && newCableForceData.Time.Hour <= 19)
+                        {
+                            if (newCableForceData.Time.Minute == 18)
+                            {
+                                newCableForceData.CableForce = random.Next(1700, 2200);//可能红色报警
+                            }
+                            else
+                            {
+                                newCableForceData.CableForce = random.Next(1200,1500);//正常值  
+                            }                         
+                        }
+                        //20点到0点
                         else
                         {
-                            newCableForceData.CableForce = random.Next(700, 1400);
-                        }
-                    }
-                    else if (newCableForceData.Time.Hour >= 9 && newCableForceData.Time.Hour <= 11)
-                    {
-                        newCableForceData.CableForce = random.Next(500, 1200);
-                    }
-                    else if (newCableForceData.Time.Hour >= 12 && newCableForceData.Time.Hour <= 14)
-                    {
-                        if (newCableForceData.Time.Minute == 17)
-                        {
-                            newCableForceData.CableForce = random.Next(1700, 2200);//可能红色报警
-                        }
-                        else
-                        {
-                            newCableForceData.CableForce = random.Next(700, 1400);
-                        }
-                    }
-                    else if (newCableForceData.Time.Hour >= 15 && newCableForceData.Time.Hour <= 16)
-                    {
-                        newCableForceData.CableForce = random.Next(2000, 2500);
-                    }
-                    else if (newCableForceData.Time.Hour >= 17 && newCableForceData.Time.Hour <= 19)
-                    {
-                        if (newCableForceData.Time.Minute == 17)
-                        {
-                            newCableForceData.CableForce = random.Next(2000, 2500);//可能红色报警
-                        }
-                        else
-                        {
-                            newCableForceData.CableForce = random.Next(2000, 2500);
+                            newCableForceData.CableForce = random.Next(1200, 1500);//正常值  
                         }
                     }
                     else
                     {
-                        newCableForceData.CableForce = random.Next(500, 1200);
+                        newCableForceData.CableForce = random.Next(1200, 1500);//正常值   
+
                     }
+                                                     
                 }
+
                 //设置下层吊杆
                 else if (newCableForceData.PointsNumberId >= 139 && newCableForceData.PointsNumberId <= 146)
                 {
-                    if (newCableForceData.Time.Hour >= 0 && newCableForceData.Time.Hour <= 6)
+                    if (newCableForceData.PointsNumberId == warningPointThree)
                     {
-                        newCableForceData.CableForce = random.Next(460, 1800);
-                    }
-                    else if (newCableForceData.Time.Hour >= 7 && newCableForceData.Time.Hour <= 8)
-                    {
-                        if (newCableForceData.Time.Minute == 17)
+                        //0点到6点正常
+                        if (newCableForceData.Time.Hour >= 0 && newCableForceData.Time.Hour <= 6)
                         {
-                            newCableForceData.CableForce = random.Next(2400, 3100);//可能红色报警
+                            newCableForceData.CableForce = random.Next(1500, 1800);
                         }
-                        newCableForceData.CableForce = random.Next(1500, 2200);
-                    }
-                    else if (newCableForceData.Time.Hour >= 9 && newCableForceData.Time.Hour <= 11)
-                    {
-                        newCableForceData.CableForce = random.Next(1000, 1200);
-                    }
-                    else if (newCableForceData.Time.Hour >= 12 && newCableForceData.Time.Hour <= 14)
-                    {
-                        if (newCableForceData.Time.Minute == 17)
+                        //7点到9点，遇到17分 可能出现报警
+                        else if (newCableForceData.Time.Hour >= 7 && newCableForceData.Time.Hour <= 8)
                         {
-                            newCableForceData.CableForce = random.Next(2400, 3100);//可能红色报警
+                            if (newCableForceData.Time.Minute == 17)
+                            {
+                                newCableForceData.CableForce = random.Next(2000, 3500);//可能报警
+                            }
+                            else
+                            {
+                                newCableForceData.CableForce = random.Next(1500, 2200);//正常值             
+                            }
                         }
-                        newCableForceData.CableForce = random.Next(1500, 2200);
-                    }
-                    else if (newCableForceData.Time.Hour >= 15 && newCableForceData.Time.Hour <= 16)
-                    {
-                        newCableForceData.CableForce = random.Next(1000, 2000);
-                    }
-                    else if (newCableForceData.Time.Hour >= 17 && newCableForceData.Time.Hour <= 19)
-                    {
-                        if (newCableForceData.Time.Minute == 17)
+                        //9点到12点正常
+                        else if (newCableForceData.Time.Hour >= 9 && newCableForceData.Time.Hour <= 11)
                         {
-                            newCableForceData.CableForce = random.Next(2400, 3100);//可能红色报警
+                            newCableForceData.CableForce = random.Next(1700, 2200);
                         }
-                        newCableForceData.CableForce = random.Next(1500, 2200);
+                        //12点到15点，遇到27分可能出现报警
+                        else if (newCableForceData.Time.Hour >= 12 && newCableForceData.Time.Hour <= 14)
+                        {
+                            if (newCableForceData.Time.Minute == 27)
+                            {
+                                newCableForceData.CableForce = random.Next(2000, 3100);//可能报警
+                            }
+                            else
+                            {
+                                newCableForceData.CableForce = random.Next(1800, 2200);//正常值             
+                            }
+                        }
+                        //15点到17点，正常
+                        else if (newCableForceData.Time.Hour >= 15 && newCableForceData.Time.Hour <= 16)
+                        {
+                            newCableForceData.CableForce = random.Next(1000, 2000);
+                        }
+                        //17点到20点，可能出现报警。
+                        else if (newCableForceData.Time.Hour >= 17 && newCableForceData.Time.Hour <= 19)
+                        {
+                            if (newCableForceData.Time.Minute == 45)
+                            {
+                                newCableForceData.CableForce = random.Next(2000, 3100);//可能报警
+                            }
+                            else
+                            {
+                                newCableForceData.CableForce = random.Next(1800, 2200);//正常值             
+                            }
+                        }
+                        //20点到0点，正常
+                        else
+                        {
+                            newCableForceData.CableForce = random.Next(1000, 2000);
+                        }
                     }
                     else
                     {
                         newCableForceData.CableForce = random.Next(1000, 2000);
                     }
+                  
                 }
+
                 //设置柔性系杆
                 else if (newCableForceData.PointsNumberId >= 147 && newCableForceData.PointsNumberId <= 158)
                 {
-                    if (newCableForceData.Time.Hour >= 0 && newCableForceData.Time.Hour <= 6)
-                    {
-                        newCableForceData.CableForce = random.Next(800, 1200);
-                    }
-                    else if (newCableForceData.Time.Hour >= 7 && newCableForceData.Time.Hour <= 8)
-                    {
-                        if (newCableForceData.Time.Minute == 17)
+                    if (newCableForceData.PointsNumberId == warningPointFour)
+                    { //0点到7点，正常
+                        if (newCableForceData.Time.Hour >= 0 && newCableForceData.Time.Hour <= 6)
                         {
-                            newCableForceData.CableForce = random.Next(1400, 2400);//可能红色报警
+                            newCableForceData.CableForce = random.Next(1300, 1600);
                         }
-                        newCableForceData.CableForce = random.Next(1000, 1600);
-                    }
-                    else if (newCableForceData.Time.Hour >= 9 && newCableForceData.Time.Hour <= 11)
-                    {
-                        newCableForceData.CableForce = random.Next(1000, 1600);
-                    }
-                    else if (newCableForceData.Time.Hour >= 12 && newCableForceData.Time.Hour <= 14)
-                    {
-                        if (newCableForceData.Time.Minute == 17)
+                        //7点到9点，17分钟，可能出现报警
+                        else if (newCableForceData.Time.Hour >= 7 && newCableForceData.Time.Hour <= 8)
                         {
-                            newCableForceData.CableForce = random.Next(1400, 2400);//可能红色报警
+                            if (newCableForceData.Time.Minute == 17)
+                            {
+                                newCableForceData.CableForce = random.Next(1400, 2200);//可能报警
+                            }
+                            else
+                            {
+                                newCableForceData.CableForce = random.Next(1200, 1600);
+                            }                     
                         }
-                        newCableForceData.CableForce = random.Next(1000, 1600);
-                    }
-                    else if (newCableForceData.Time.Hour >= 15 && newCableForceData.Time.Hour <= 16)
-                    {
-                        newCableForceData.CableForce = random.Next(1000, 1600);
-                    }
-                    else if (newCableForceData.Time.Hour >= 17 && newCableForceData.Time.Hour <= 19)
-                    {
-                        if (newCableForceData.Time.Minute == 17)
+                        //9点到12点，正常
+                        else if (newCableForceData.Time.Hour >= 9 && newCableForceData.Time.Hour <= 11)
                         {
-                            newCableForceData.CableForce = random.Next(1400, 2400);//可能红色报警
+                            newCableForceData.CableForce = random.Next(1200, 1600);
                         }
-                        newCableForceData.CableForce = random.Next(1000, 1600);
+                        //12点到15点，27分钟，可能出现报警
+                        else if (newCableForceData.Time.Hour >= 12 && newCableForceData.Time.Hour <= 14)
+                        {
+                            if ( newCableForceData.Time.Minute == 27)
+                            {
+                                newCableForceData.CableForce = random.Next(1400, 2200);//可能报警
+                            }
+                            else
+                            {
+                                newCableForceData.CableForce = random.Next(1200, 1600);
+                            }
+                        }
+                        //15点17点，正常
+                        else if (newCableForceData.Time.Hour >= 15 && newCableForceData.Time.Hour <= 16)
+                        {
+                            newCableForceData.CableForce = random.Next(1000, 1600);
+                        }
+                        //17点到20点，37分，可能出现报警
+                        else if (newCableForceData.Time.Hour >= 17 && newCableForceData.Time.Hour <= 19)
+                        {
+                            if (newCableForceData.Time.Minute == 4)
+                            {
+                                newCableForceData.CableForce = random.Next(1400, 2200);//可能报警
+                            }
+                            else
+                            {
+                                newCableForceData.CableForce = random.Next(1300, 1600);
+                            }                           
+                        }
+                        //20点到0点，正常
+                        else
+                        {
+                            newCableForceData.CableForce = random.Next(1300, 1600);
+                        }
                     }
                     else
                     {
-                        newCableForceData.CableForce = random.Next(800, 1400);
-                    }
+                        newCableForceData.CableForce = random.Next(1300, 1600);
+                    }              
                 }
                 await AddOriginal_CableForceTableEntity(container, newCableForceData);
             }
@@ -346,7 +417,7 @@ namespace BHMSClient
                     Time = DateTime.Now,
                 };
                 //异常设置
-                if ((newDisplacementData.PointsNumberId == 98 || newDisplacementData.PointsNumberId == 110 || newDisplacementData.PointsNumberId == 114 )&& newDisplacementData.Time.Hour == 7 && newDisplacementData.Time.Minute == 35)
+                if ((newDisplacementData.PointsNumberId == 98 || newDisplacementData.PointsNumberId == 110 || newDisplacementData.PointsNumberId == 114) && newDisplacementData.Time.Hour == 7 && newDisplacementData.Time.Minute == 35)
                 {
                     newDisplacementData.Displacement = 500;
                 }
@@ -457,7 +528,7 @@ namespace BHMSClient
                     }
                 }
                 //拱肋中拱竖向挠度
-               else if (newDisplacementData.PointsNumberId == 104 || newDisplacementData.PointsNumberId == 106)
+                else if (newDisplacementData.PointsNumberId == 104 || newDisplacementData.PointsNumberId == 106)
                 {
                     if (newDisplacementData.Time.Hour >= 0 && newDisplacementData.Time.Hour <= 6)
                     {
@@ -510,7 +581,7 @@ namespace BHMSClient
                     }
                 }
                 //边跨主梁竖向挠度
-               else if (newDisplacementData.PointsNumberId == 107 || newDisplacementData.PointsNumberId == 109 || newDisplacementData.PointsNumberId == 110 || newDisplacementData.PointsNumberId == 112)
+                else if (newDisplacementData.PointsNumberId == 107 || newDisplacementData.PointsNumberId == 109 || newDisplacementData.PointsNumberId == 110 || newDisplacementData.PointsNumberId == 112)
                 {
                     if (newDisplacementData.Time.Hour >= 0 && newDisplacementData.Time.Hour <= 6)
                     {
@@ -563,7 +634,7 @@ namespace BHMSClient
                     }
                 }
                 //中跨主梁竖向挠度
-               else if (newDisplacementData.PointsNumberId == 108 || newDisplacementData.PointsNumberId == 111)
+                else if (newDisplacementData.PointsNumberId == 108 || newDisplacementData.PointsNumberId == 111)
                 {
                     if (newDisplacementData.Time.Hour >= 0 && newDisplacementData.Time.Hour <= 6)
                     {
@@ -616,7 +687,7 @@ namespace BHMSClient
                     }
                 }
                 //过渡墩纵向位移
-              else if (newDisplacementData.PointsNumberId >= 117 && newDisplacementData.PointsNumberId <= 120)
+                else if (newDisplacementData.PointsNumberId >= 117 && newDisplacementData.PointsNumberId <= 120)
                 {
                     if (newDisplacementData.Time.Hour >= 0 && newDisplacementData.Time.Hour <= 6)
                     {
@@ -669,7 +740,7 @@ namespace BHMSClient
                     }
                 }
                 //伸缩缝纵向位移
-               else
+                else
                 {
                     if (newDisplacementData.Time.Hour >= 0 && newDisplacementData.Time.Hour <= 6)
                     {
@@ -747,11 +818,11 @@ namespace BHMSClient
 
                 if (newHumidityData.PointsNumberId == 159)
                 {
-                    newHumidityData.Humidity = Math.Round((-0.0000078423 * Math.Pow(timeForCalculate, 6) + 0.0002969528 * Math.Pow(timeForCalculate, 5) - 0.0003479320 * Math.Pow(timeForCalculate, 4) - 0.0882313919 * Math.Pow(timeForCalculate, 3) + 0.9074929115 * Math.Pow(timeForCalculate, 2) - 2.7612024709 * timeForCalculate + 94.4810448062 + random.Next(-5, 5)),2);
+                    newHumidityData.Humidity = Math.Round((-0.0000078423 * Math.Pow(timeForCalculate, 6) + 0.0002969528 * Math.Pow(timeForCalculate, 5) - 0.0003479320 * Math.Pow(timeForCalculate, 4) - 0.0882313919 * Math.Pow(timeForCalculate, 3) + 0.9074929115 * Math.Pow(timeForCalculate, 2) - 2.7612024709 * timeForCalculate + 94.4810448062 + random.Next(-5, 5)), 2);
                 }
                 else
                 {
-                    newHumidityData.Humidity = Math.Round((0.0000003604 * Math.Pow(timeForCalculate, 6) - 0.0000414864 * Math.Pow(timeForCalculate, 5) + 0.0021461937 * Math.Pow(timeForCalculate, 4) - 0.0521791190 * Math.Pow(timeForCalculate, 3) + 0.5739883341 * Math.Pow(timeForCalculate, 2) - 2.1637451666 * timeForCalculate + 42.5826680075 + random.Next(-5, 5)),2);
+                    newHumidityData.Humidity = Math.Round((0.0000003604 * Math.Pow(timeForCalculate, 6) - 0.0000414864 * Math.Pow(timeForCalculate, 5) + 0.0021461937 * Math.Pow(timeForCalculate, 4) - 0.0521791190 * Math.Pow(timeForCalculate, 3) + 0.5739883341 * Math.Pow(timeForCalculate, 2) - 2.1637451666 * timeForCalculate + 42.5826680075 + random.Next(-5, 5)), 2);
 
                 }
                 await AddOriginal_HumidityTableEntity(container, newHumidityData);
@@ -834,7 +905,7 @@ namespace BHMSClient
                     }
                 }
                 //设置钢拱肋B、D截面的应变值
-              else if ((newSteelArchStrainData.PointsNumberId >= 9 && newSteelArchStrainData.PointsNumberId <= 16) || (newSteelArchStrainData.PointsNumberId >= 25 && newSteelArchStrainData.PointsNumberId <= 32))
+                else if ((newSteelArchStrainData.PointsNumberId >= 9 && newSteelArchStrainData.PointsNumberId <= 16) || (newSteelArchStrainData.PointsNumberId >= 25 && newSteelArchStrainData.PointsNumberId <= 32))
                 {
                     if (newSteelArchStrainData.Time.Hour >= 0 && newSteelArchStrainData.Time.Hour <= 6)
                     {
@@ -887,7 +958,7 @@ namespace BHMSClient
                     }
                 }
                 //设置拱肋横撑A、B截面的应变值
-               else if (newSteelArchStrainData.PointsNumberId >= 41 && newSteelArchStrainData.PointsNumberId <= 48)
+                else if (newSteelArchStrainData.PointsNumberId >= 41 && newSteelArchStrainData.PointsNumberId <= 48)
                 {
                     if (newSteelArchStrainData.Time.Hour >= 0 && newSteelArchStrainData.Time.Hour <= 6)
                     {
@@ -966,7 +1037,7 @@ namespace BHMSClient
                     newSteelLatticeStrainData.Strain = 1100;
                 }
                 //设置肋间横梁A/B截面/上层钢横梁A/B截面的应变值
-               else if (newSteelLatticeStrainData.PointsNumberId >= 49 && newSteelLatticeStrainData.PointsNumberId <= 56)
+                else if (newSteelLatticeStrainData.PointsNumberId >= 49 && newSteelLatticeStrainData.PointsNumberId <= 56)
                 {
                     if (newSteelLatticeStrainData.Time.Hour >= 0 && newSteelLatticeStrainData.Time.Hour <= 6)
                     {
@@ -1019,7 +1090,7 @@ namespace BHMSClient
                     }
                 }
                 //设置钢纵梁A/B截面应变
-              else if (newSteelLatticeStrainData.PointsNumberId >= 57 && newSteelLatticeStrainData.PointsNumberId <= 62)
+                else if (newSteelLatticeStrainData.PointsNumberId >= 57 && newSteelLatticeStrainData.PointsNumberId <= 62)
                 {
                     if (newSteelLatticeStrainData.Time.Hour >= 0 && newSteelLatticeStrainData.Time.Hour <= 6)
                     {
@@ -1072,7 +1143,7 @@ namespace BHMSClient
                     }
                 }
                 //设置上层钢性系杆截面的上缘应变值
-               else  if ((newSteelLatticeStrainData.PointsNumberId >= 63 && newSteelLatticeStrainData.PointsNumberId <= 64) || (newSteelLatticeStrainData.PointsNumberId >= 67 && newSteelLatticeStrainData.PointsNumberId <= 68) || (newSteelLatticeStrainData.PointsNumberId >= 71 && newSteelLatticeStrainData.PointsNumberId <= 72) || (newSteelLatticeStrainData.PointsNumberId >= 75 && newSteelLatticeStrainData.PointsNumberId <= 76))
+                else if ((newSteelLatticeStrainData.PointsNumberId >= 63 && newSteelLatticeStrainData.PointsNumberId <= 64) || (newSteelLatticeStrainData.PointsNumberId >= 67 && newSteelLatticeStrainData.PointsNumberId <= 68) || (newSteelLatticeStrainData.PointsNumberId >= 71 && newSteelLatticeStrainData.PointsNumberId <= 72) || (newSteelLatticeStrainData.PointsNumberId >= 75 && newSteelLatticeStrainData.PointsNumberId <= 76))
                 {
                     if (newSteelLatticeStrainData.Time.Hour >= 0 && newSteelLatticeStrainData.Time.Hour <= 6)
                     {
@@ -1124,7 +1195,7 @@ namespace BHMSClient
                         newSteelLatticeStrainData.Strain = random.Next(-150, 350);
                     }
                 }
-              else
+                else
                 {
                     if (newSteelLatticeStrainData.Time.Hour >= 0 && newSteelLatticeStrainData.Time.Hour <= 6)
                     {
@@ -1201,11 +1272,11 @@ namespace BHMSClient
                 timeForCalculate = Convert.ToDouble(newTemperatureData.Time.Hour) + Convert.ToDouble(newTemperatureData.Time.Minute) / 60;
                 if (newTemperatureData.PointsNumberId == 168)
                 {
-                    newTemperatureData.Temperature = Math.Round((0.0006688963 * Math.Pow(timeForCalculate, 4) - 0.0348599334 * Math.Pow(timeForCalculate, 3) + 0.5121538687 * Math.Pow(timeForCalculate, 2) - 1.3478253362 * timeForCalculate + 23.4826210826 + random.Next(-2, 2)),2);
+                    newTemperatureData.Temperature = Math.Round((0.0006688963 * Math.Pow(timeForCalculate, 4) - 0.0348599334 * Math.Pow(timeForCalculate, 3) + 0.5121538687 * Math.Pow(timeForCalculate, 2) - 1.3478253362 * timeForCalculate + 23.4826210826 + random.Next(-2, 2)), 2);
                 }
                 else
                 {
-                    newTemperatureData.Temperature = Math.Round((-0.0000161352 * Math.Pow(timeForCalculate, 6) + 0.0013666675 * Math.Pow(timeForCalculate, 5) - 0.0419269504 * Math.Pow(timeForCalculate, 4) + 0.5518862571 * Math.Pow(timeForCalculate, 3) - 2.8402782982 * Math.Pow(timeForCalculate, 2) + 5.1969544638 * timeForCalculate + 11.6605128245 + random.Next(-2, 5)),2);
+                    newTemperatureData.Temperature = Math.Round((-0.0000161352 * Math.Pow(timeForCalculate, 6) + 0.0013666675 * Math.Pow(timeForCalculate, 5) - 0.0419269504 * Math.Pow(timeForCalculate, 4) + 0.5518862571 * Math.Pow(timeForCalculate, 3) - 2.8402782982 * Math.Pow(timeForCalculate, 2) + 5.1969544638 * timeForCalculate + 11.6605128245 + random.Next(-2, 5)), 2);
 
                 }
                 await AddOriginal_TemperatureTableEntity(container, newTemperatureData);
@@ -1232,7 +1303,7 @@ namespace BHMSClient
                 };
                 timeForCalculate = Convert.ToDouble(newWindLoadData.Time.Hour) + Convert.ToDouble(newWindLoadData.Time.Minute) / 60;
 
-                newWindLoadData.WindSpeed = Math.Round((0.0000098798 * Math.Pow(timeForCalculate, 6) - 0.0006773310 * Math.Pow(timeForCalculate, 5) + 0.0168724697 * Math.Pow(timeForCalculate, 4) - 0.1791762231 * Math.Pow(timeForCalculate, 3) + 0.6505986426 * Math.Pow(timeForCalculate, 2) + 0.5279698407 * timeForCalculate + 10.2690913645 + random.Next(-2, 4)),2);
+                newWindLoadData.WindSpeed = Math.Round((0.0000098798 * Math.Pow(timeForCalculate, 6) - 0.0006773310 * Math.Pow(timeForCalculate, 5) + 0.0168724697 * Math.Pow(timeForCalculate, 4) - 0.1791762231 * Math.Pow(timeForCalculate, 3) + 0.6505986426 * Math.Pow(timeForCalculate, 2) + 0.5279698407 * timeForCalculate + 10.2690913645 + random.Next(-2, 4)), 2);
 
                 await AddOriginal_WindLoadTableEntity(container, newWindLoadData);
             }
